@@ -6,10 +6,14 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "elysia": "latest",
+    "firebase-admin": "^12.1.1"
   },
   "devDependencies": {
     "bun-types": "latest"
   },
-  "module": "src/index.js"
+  "module": "src/index.js",
+  "trustedDependencies": [
+    "protobufjs"
+  ]
 }
