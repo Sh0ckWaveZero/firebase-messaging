@@ -24,12 +24,6 @@ const createMessage = (): admin.messaging.Message => {
       "title": "NEW OPD",
       "body": "นายมานะ มานะมา",
     },
-    android: {
-      notification: {
-        "title": "NEW OPD",
-        "body": "นายมานะ มานะมา",
-      },
-    },
     data: {
       id: '1',
       title: 'Notification Title',
