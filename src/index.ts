@@ -2,6 +2,8 @@ import { env } from 'bun';
 import * as serviceAccount from "../config/serviceAccountKey.json";
 import { Elysia } from "elysia";
 import admin from "firebase-admin";
+import { Message } from 'firebase-admin/lib/messaging/messaging-api';
+
 
 const initializeFirebase = () => {
   try {
@@ -14,7 +16,7 @@ const initializeFirebase = () => {
   }
 }
 
-const createMessage = (): admin.messaging.Message => {
+const createMessage = (): Message => {
   // TODO: Replace with your actual FCM token
   const fvmToken = env.FCM_TOKEN ?? '';
 
@@ -36,7 +38,7 @@ const createMessage = (): admin.messaging.Message => {
   };
 }
 
-const sendMessage = async (message: admin.messaging.Message) => {
+const sendMessage = async (message: Message) => {
   try {
     const response = await admin.messaging().send(message);
     console.log('Successfully sent message:', response);
