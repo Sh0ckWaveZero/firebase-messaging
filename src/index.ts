@@ -33,7 +33,14 @@ const createMessage = (): Message => {
       name: 'Notification Name',
       time: 'Notification Time',
       icon: 'Notification Icon',
-      isRead: 'false',
+      data: {
+        id: '1',
+        title: 'Notification Title',
+        type: 'Notification Type',
+        name: 'Notification Name',
+        time: 'Notification Time',
+        icon: 'Notification Icon',
+      }.toString()
     }
   };
 }
