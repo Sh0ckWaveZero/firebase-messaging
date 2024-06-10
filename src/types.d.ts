@@ -1,3 +1,13 @@
+export type NotificationInfo = {
+  id: string;
+  title: string;
+  type: NotificationType;
+  name: string;
+  time: string;
+  icon: string;
+  data: string;
+};
+
 export type NotificationData = {
   opdInfo?: OpdInfo;
   ipdInfo?: IpdInfo;
@@ -9,7 +19,10 @@ export type IpdInfo = {
   patient?: PatientInfo;
 };
 
+export type TabType = 'inProgress' | 'finished';
+
 export type OpdInfo = {
+  pathName?: TabType;
   patient?: PatientInfo;
 };
 
