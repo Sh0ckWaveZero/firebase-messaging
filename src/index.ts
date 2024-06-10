@@ -33,14 +33,14 @@ const createMessage = (): Message => {
       name: 'Notification Name',
       time: 'Notification Time',
       icon: 'Notification Icon',
-      data: {
+      data: JSON.stringify({
         id: '1',
         title: 'Notification Title',
         type: 'Notification Type',
         name: 'Notification Name',
         time: 'Notification Time',
         icon: 'Notification Icon',
-      }.toString()
+      })
     }
   };
 }
