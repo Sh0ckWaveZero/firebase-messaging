@@ -2,7 +2,7 @@ import { env } from 'bun';
 import { Message } from 'firebase-admin/lib/messaging/messaging-api';
 import { CoSignOrderData, IconType, IpdInfo, NotificationData, NotificationInfo, NotificationType, OpdInfo, PatientInfo } from '../types';
 import { FirebaseService } from './firebase_service';
-import { fa, faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 export class MessageService {
   patientName: string = '';
@@ -49,7 +49,7 @@ export class MessageService {
       visitNumber: faker.number.bigInt({ min: 1000000n, max: 9999999n }).toString(),
       visitType: faker.helpers.arrayElement(["Follow-up Visit/การติดตาม", "Initial Visit/การเยี่ยมชมเริ่มต้น"]),
       department: faker.helpers.arrayElement(["Pediatrics", "Cardiology", "Neurology"]),
-      visitTime: faker.date.future().toISOString(),
+      visitTime: new Date(Date.now()).toISOString(),
       gender: faker.helpers.arrayElement(["male", "female"]),
       status: faker.helpers.arrayElement(["In Progress", "Completed", "Scheduled"])
     };
@@ -79,7 +79,7 @@ export class MessageService {
       title: title,
       type: notificationType,
       name: this.patientName,
-      time: faker.date.future().toISOString(),
+      time: new Date(Date.now()).toISOString(),
       icon: iconType,
       data: JSON.stringify(notificationData)
     };
@@ -115,7 +115,7 @@ export class MessageService {
       dateOfBirth: faker.date.past().toISOString(),
       mrn: faker.number.bigInt({ min: 1000000n, max: 9999999n }).toString(),
       orderName: faker.lorem.sentence(),
-      visitTime: faker.date.future().toISOString(),
+      visitTime: new Date(Date.now()).toISOString(),
       departmentId: faker.string.uuid(),
       department: faker.helpers.arrayElement(["Pediatrics", "Cardiology", "Neurology"]),
       gender: faker.helpers.arrayElement(["male", "female"]),
