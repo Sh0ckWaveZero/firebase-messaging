@@ -11,7 +11,7 @@ export type NotificationInfo = {
 export type NotificationData = {
   opdInfo?: OpdInfo;
   ipdInfo?: IpdInfo;
-  consign?: {};
+  coSignInfo?: {};
   lab?: {};
 };
 
@@ -20,6 +20,7 @@ export type IpdInfo = {
 };
 
 export type TabType = 'inProgress' | 'finished';
+export type IconType = 'visit_ipd' | 'visit_opd' | 'co_sign_order' | 'laboratory';
 
 export type OpdInfo = {
   pathName?: TabType;
@@ -56,6 +57,7 @@ export type CoSignOrderData = {
   dateOfBirth?: string;
   patientOrderId?: string;
   patientOrderItemId?: string;
+  visitTime?: string;
 };
 
 export type NotificationType = 'opd' | 'ipd' | 'cosign' | 'lab';
