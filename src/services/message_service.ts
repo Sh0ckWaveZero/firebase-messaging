@@ -1,45 +1,39 @@
 import { env } from 'bun';
 import { Message } from 'firebase-admin/lib/messaging/messaging-api';
-import { CoSignOrderData, IconType, IpdInfo, NotificationData, NotificationInfo, NotificationType, OpdInfo, PatientInfo } from '../types';
+import { CoSignOrderData, IconType, IpdInfo, NotificationData, NotificationInfo, NotificationType, OpdInfo, PatientInfo } from 'NotificationModule';
 import { FirebaseService } from './firebase_service';
 import { faker } from '@faker-js/faker';
 
 export class MessageService {
   patientName: string = '';
-
   title: string = '';
   notificationType: NotificationType = 'lab';
   iconType: IconType = 'laboratory';
-  constructor(private firebaseService: FirebaseService) {
+  constructor(
+    private firebaseService: FirebaseService
+  ) {
     this.patientName = faker.person.fullName();
   }
   private getFvmToken(): string {
     return env.FCM_TOKEN ?? '';
   }
 
+  private messageMap: { [key: string]: { iconType: IconType, title: string } } = {
+    'opd': { iconType: 'visit_opd', title: 'New OPD patient' },
+    'ipd': { iconType: 'visit_ipd', title: 'New IPD patient' },
+    'cosign': { iconType: 'co_sign_order', title: 'Co-Sign Request' },
+    'default': { iconType: 'laboratory', title: 'Laboratory' }
+  };
+
   private getIconType(type: string): IconType {
-    if (type === 'opd') {
-      return 'visit_opd';
-    } else if (type === 'ipd') {
-      return 'visit_ipd';
-    } else if (type === 'cosign') {
-      return 'co_sign_order';
-    }
-    return 'laboratory';
+    return this.messageMap[type]?.iconType || this.messageMap['default'].iconType;
   }
 
-  private getTile(type: string): string {
-    if (type === 'opd') {
-      return 'New OPD patient';
-    } else if (type === 'ipd') {
-      return 'New IPD patient';
-    } else if (type === 'cosign') {
-      return 'Co-Sign Request';
-    }
-    return 'Laboratory';
+  private getTitle(type: string): string {
+    return this.messageMap[type]?.title || this.messageMap['default'].title;
   }
 
-  public createOpdPatient(): PatientInfo {
+  private generateFakePatientData(): PatientInfo {
     return {
       patientId: faker.string.uuid(),
       patientVisitId: faker.string.uuid(),
@@ -53,6 +47,10 @@ export class MessageService {
       gender: faker.helpers.arrayElement(["male", "female"]),
       status: faker.helpers.arrayElement(["In Progress", "Completed", "Scheduled"])
     };
+  }
+
+  public createOpdPatient(): PatientInfo {
+    return this.generateFakePatientData();
   }
 
   public createOpdInfo(patient: PatientInfo): OpdInfo {
@@ -72,7 +70,7 @@ export class MessageService {
   }
 
   public createNotificationInfo(notificationType: NotificationType, notificationData: NotificationData, iconType: IconType): NotificationInfo {
-    const title: string = this.getTile(this.notificationType);
+    const title: string = this.getTitle(this.notificationType);
 
     return {
       id: faker.string.uuid(),
@@ -95,7 +93,7 @@ export class MessageService {
     const iconType = this.getIconType(this.notificationType);
     const notificationData = this.createNotificationData(opdInfo, ipdInfo, consignInfo);
     const notificationInfo = this.createNotificationInfo(this.notificationType, notificationData, iconType);
-    const title: string = this.getTile(this.notificationType);
+    const title: string = this.getTitle(this.notificationType);
 
     return {
       token: fvmToken,

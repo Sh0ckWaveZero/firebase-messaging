@@ -7,7 +7,7 @@ const startServer = () => {
 
   const app = new Elysia()
     .get("/", () => "Hello Elysia")
-    .post("/pushMessage", ({ body }) => messageService.handlePushMessage(body),)
+    .post("/pushMessage", ({ body }) => messageService.handlePushMessage(body))
     .listen(3000);
 
   console.log(
