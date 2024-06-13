@@ -53,6 +53,10 @@ export class MessageService {
     return this.generateFakePatientData();
   }
 
+  public createIpdPatient(): PatientInfo {
+    return this.generateFakePatientData();
+  }
+
   public createOpdInfo(patient: PatientInfo): OpdInfo {
     return {
       patient: patient,
@@ -86,7 +90,7 @@ export class MessageService {
   public createMessage(): Message {
     const fvmToken = this.getFvmToken();
     const opdPatient = this.createOpdPatient();
-    const ipdPatient: PatientInfo = {};
+    const ipdPatient: PatientInfo = this.createIpdPatient();
     const opdInfo = this.createOpdInfo(opdPatient);
     const ipdInfo: IpdInfo = { patient: ipdPatient };
     const consignInfo = this.createConsignInfo();
