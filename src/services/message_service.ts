@@ -1,6 +1,6 @@
 import { env } from 'bun';
 import { Message } from 'firebase-admin/lib/messaging/messaging-api';
-import { CoSignOrderData, IconType, IpdInfo, NotificationData, NotificationInfo, NotificationType, OpdInfo, PatientInfo } from 'NotificationModule';
+import { CoSignOrderData, IconType, IpdInfo, MessageType, NotificationData, NotificationInfo, NotificationType, OpdInfo, PatientInfo } from 'NotificationModule';
 import { FirebaseService } from './firebase_service';
 import { faker } from '@faker-js/faker';
 
@@ -18,7 +18,7 @@ export class MessageService {
     return env.FCM_TOKEN ?? '';
   }
 
-  private messageMap: { [key: string]: { iconType: IconType, title: string } } = {
+  private messageMap: { [key: string]: MessageType } = {
     'opd': { iconType: 'visit_opd', title: 'New OPD patient' },
     'ipd': { iconType: 'visit_ipd', title: 'New IPD patient' },
     'cosign': { iconType: 'co_sign_order', title: 'Co-Sign Request' },
