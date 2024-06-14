@@ -9,14 +9,13 @@ export class MessageService {
   title: string = '';
   notificationType: NotificationType = 'lab';
   iconType: IconType = 'laboratory';
+  fcmToken: string = '';
   constructor(
     private firebaseService: FirebaseService
   ) {
     this.patientName = faker.person.fullName();
   }
-  private getFvmToken(): string {
-    return env.FCM_TOKEN ?? '';
-  }
+
 
   private messageMap: { [key: string]: MessageType } = {
     'opd': { iconType: 'visit_opd', title: 'New OPD patient' },
@@ -88,7 +87,6 @@ export class MessageService {
   }
 
   public createMessage(): Message {
-    const fvmToken = this.getFvmToken();
     const opdPatient = this.createOpdPatient();
     const ipdPatient: PatientInfo = this.createIpdPatient();
     const opdInfo = this.createOpdInfo(opdPatient);
@@ -100,7 +98,7 @@ export class MessageService {
     const title: string = this.getTitle(this.notificationType);
 
     return {
-      token: fvmToken,
+      token: this.fcmToken,
       notification: this.createNotification(title),
       data: notificationInfo,
     };
@@ -131,8 +129,10 @@ export class MessageService {
     };
   }
 
-  public async handlePushMessage(body: any) {
-    this.notificationType = body.from ?? 'lab';
+  public async handlePushMessage(body: any): Promise<any> {
+    const { from = 'lab', token } = body;
+    this.notificationType = from;
+    this.fcmToken = token ?? env.FCM_TOKEN;
     this.patientName = faker.person.fullName();
     const message = this.createMessage();
     return this.firebaseService.sendMessage(message);
